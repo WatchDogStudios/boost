@@ -2,7 +2,7 @@
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2017-2019 Ruben Van Boxem
+# Copyright (c) 2017-2024 Ruben Van Boxem & WD Studios L.L.C.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -32,3 +32,4 @@ if(NOT Boost_FOUND)
   add_library(boost INTERFACE)
   target_include_directories(boost SYSTEM INTERFACE ${CMAKE_CURRENT_LIST_DIR}/boost)
 endif()
+
