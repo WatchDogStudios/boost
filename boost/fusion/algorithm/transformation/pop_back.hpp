@@ -4,7 +4,7 @@
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-#if !defined(FUSION_POP_BACK_09172005_1038)
+#ifndef FUSION_POP_BACK_09172005_1038
 #define FUSION_POP_BACK_09172005_1038
 
 #include <boost/fusion/support/config.hpp>
@@ -17,6 +17,11 @@
 #include <boost/mpl/minus.hpp>
 #include <boost/mpl/int.hpp>
 #include <boost/mpl/if.hpp>
+
+#ifdef _MSC_VER
+#  pragma warning(push)
+#  pragma warning(disable: 4512) // assignment operator could not be generated.
+#endif
 
 namespace boost { namespace fusion
 {
@@ -167,6 +172,10 @@ namespace boost { namespace fusion
         );
     }
 }}
+
+#ifdef _MSC_VER
+#  pragma warning(pop)
+#endif
 
 #endif
 

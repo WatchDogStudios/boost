@@ -4,7 +4,7 @@
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-#if !defined(FUSION_JOINT_VIEW_ITERATOR_07162005_0140)
+#ifndef FUSION_JOINT_VIEW_ITERATOR_07162005_0140
 #define FUSION_JOINT_VIEW_ITERATOR_07162005_0140
 
 #include <boost/fusion/support/config.hpp>
@@ -19,6 +19,11 @@
 #include <boost/fusion/view/joint_view/detail/value_of_data_impl.hpp>
 #include <boost/fusion/view/joint_view/detail/key_of_impl.hpp>
 #include <boost/static_assert.hpp>
+
+#ifdef _MSC_VER
+#  pragma warning(push)
+#  pragma warning(disable: 4512) // assignment operator could not be generated.
+#endif
 
 namespace boost { namespace fusion
 {
@@ -49,12 +54,12 @@ namespace boost { namespace fusion
 
         first_type first;
         concat_type concat;
-
-    private:
-        // silence MSVC warning C4512: assignment operator could not be generated
-        joint_view_iterator& operator= (joint_view_iterator const&);
     };
 }}
+
+#ifdef _MSC_VER
+#  pragma warning(pop)
+#endif
 
 #ifdef BOOST_FUSION_WORKAROUND_FOR_LWG_2408
 namespace std

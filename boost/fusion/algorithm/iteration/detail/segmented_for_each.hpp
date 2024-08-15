@@ -4,7 +4,7 @@
     Distributed under the Boost Software License, Version 1.0. (See accompanying 
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-#if !defined(BOOST_FUSION_SEGMENTED_FOR_EACH_HPP_INCLUDED)
+#ifndef BOOST_FUSION_SEGMENTED_FOR_EACH_HPP_INCLUDED
 #define BOOST_FUSION_SEGMENTED_FOR_EACH_HPP_INCLUDED
 
 #include <boost/fusion/support/config.hpp>
@@ -12,6 +12,11 @@
 #include <boost/fusion/support/void.hpp>
 #include <boost/fusion/algorithm/iteration/for_each_fwd.hpp>
 #include <boost/fusion/support/segmented_fold_until.hpp>
+
+#ifdef _MSC_VER
+#  pragma warning(push)
+#  pragma warning(disable: 4512) // assignment operator could not be generated.
+#endif
 
 namespace boost { namespace fusion { namespace detail
 {
@@ -48,5 +53,9 @@ namespace boost { namespace fusion { namespace detail
         fusion::segmented_fold_until(seq, void_(), segmented_for_each_fun<F>(f));
     }
 }}}
+
+#ifdef _MSC_VER
+#  pragma warning(pop)
+#endif
 
 #endif

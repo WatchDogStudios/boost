@@ -4,7 +4,7 @@
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-#if !defined(FUSION_TAG_OF_09232005_0845)
+#ifndef FUSION_TAG_OF_09232005_0845
 #define FUSION_TAG_OF_09232005_0845
 
 #include <boost/fusion/support/config.hpp>
@@ -48,11 +48,17 @@ namespace boost { namespace fusion
     {
         BOOST_MPL_HAS_XXX_TRAIT_DEF(fusion_tag)
 
+        template<typename Sequence, typename Active=void>
+        struct tag_of_fallback
+        {
+            typedef non_fusion_tag type;
+        };
+
         template <typename Sequence, typename Active>
         struct tag_of_impl
           : mpl::if_<fusion::detail::is_mpl_sequence<Sequence>,
               mpl::identity<mpl_sequence_tag>,
-              mpl::identity<non_fusion_tag> >::type
+              mpl::identity<typename tag_of_fallback<Sequence>::type> >::type
         {};
 
         template <typename Sequence>

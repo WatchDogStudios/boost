@@ -4,7 +4,7 @@
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-#if !defined(FUSION_AT_05042005_0722)
+#ifndef FUSION_AT_05042005_0722
 #define FUSION_AT_05042005_0722
 
 #include <boost/fusion/support/config.hpp>
@@ -118,7 +118,7 @@ namespace boost { namespace fusion
         >::type
     at_c(Sequence& seq)
     {
-        return fusion::at<mpl::int_<N> >(seq);
+        return result_of::at_c<Sequence, N>::call(seq);
     }
 
     template <int N, typename Sequence>
@@ -126,7 +126,7 @@ namespace boost { namespace fusion
     inline typename result_of::at_c<Sequence const, N>::type
     at_c(Sequence const& seq)
     {
-        return fusion::at<mpl::int_<N> >(seq);
+        return result_of::at_c<Sequence const, N>::call(seq);
     }
 }}
 

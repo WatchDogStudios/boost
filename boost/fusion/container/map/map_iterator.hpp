@@ -5,7 +5,7 @@
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-#if !defined(BOOST_FUSION_MAP_ITERATOR_02042013_0835)
+#ifndef BOOST_FUSION_MAP_ITERATOR_02042013_0835
 #define BOOST_FUSION_MAP_ITERATOR_02042013_0835
 
 #include <boost/fusion/support/config.hpp>
@@ -16,6 +16,11 @@
 #include <boost/utility/declval.hpp>
 #include <boost/type_traits/is_const.hpp>
 #include <boost/type_traits/add_const.hpp>
+
+#ifdef _MSC_VER
+#  pragma warning(push)
+#  pragma warning(disable: 4512) // assignment operator could not be generated.
+#endif
 
 namespace boost { namespace fusion
 {
@@ -155,13 +160,12 @@ namespace boost { namespace fusion
         {};
 
         Seq& seq_;
-
-    private:
-        // silence MSVC warning C4512: assignment operator could not be generated
-        map_iterator& operator= (map_iterator const&);
     };
-
 }}
+
+#ifdef _MSC_VER
+#  pragma warning(pop)
+#endif
 
 #ifdef BOOST_FUSION_WORKAROUND_FOR_LWG_2408
 namespace std

@@ -5,7 +5,7 @@
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-#if !defined(FUSION_SUPPORT_CONFIG_01092014_1718)
+#ifndef FUSION_SUPPORT_CONFIG_01092014_1718
 #define FUSION_SUPPORT_CONFIG_01092014_1718
 
 #include <boost/config.hpp>
@@ -125,6 +125,16 @@ namespace boost { namespace fusion { namespace detail
 #   define BOOST_FUSION_NOEXCEPT_ON_DEFAULTED
 #else
 #   define BOOST_FUSION_NOEXCEPT_ON_DEFAULTED BOOST_NOEXCEPT
+#endif
+
+#ifdef _MSC_VER
+#   define BOOST_FUSION_PUSH_WARNINGS __pragma(warning(push))
+#   define BOOST_FUSION_POP_WARNINGS  __pragma(warning(pop))
+#   define BOOST_FUSION_DISABLE_MSVC_WARNING(num) __pragma(warning(disable : num))
+#else
+#   define BOOST_FUSION_PUSH_WARNINGS
+#   define BOOST_FUSION_POP_WARNINGS
+#   define BOOST_FUSION_DISABLE_MSVC_WARNING(num)
 #endif
 
 #endif
