@@ -4,7 +4,7 @@
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-#ifndef BOOST_FUSION_CATEGORY_OF_IMPL_04202013_0940
+#if !defined(BOOST_FUSION_CATEGORY_OF_IMPL_04202013_0940)
 #define BOOST_FUSION_CATEGORY_OF_IMPL_04202013_0940
 
 namespace boost { namespace fusion

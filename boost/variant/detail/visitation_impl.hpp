@@ -18,7 +18,7 @@
 #include <boost/variant/detail/backup_holder.hpp>
 #include <boost/variant/detail/cast_storage.hpp>
 #include <boost/variant/detail/forced_return.hpp>
-#include <boost/variant/variant_fwd.hpp> // for BOOST_VARIANT_DO_NOT_USE_VARIADIC_TEMPLATES
+#include <boost/variant/variant_fwd.hpp>
 
 #include <boost/mpl/eval_if.hpp>
 #include <boost/mpl/bool.hpp>
@@ -34,9 +34,9 @@
 #include <boost/type_traits/has_nothrow_copy.hpp>
 #include <boost/type_traits/is_nothrow_move_constructible.hpp>
 
-#if BOOST_WORKAROUND(BOOST_MSVC, >= 1400) 
-# pragma warning (push) 
-# pragma warning (disable : 4702) //unreachable code 
+#if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)
+# pragma warning (push)
+# pragma warning (disable : 4702) //unreachable code
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -47,14 +47,9 @@
 //
 #if !defined(BOOST_VARIANT_VISITATION_UNROLLING_LIMIT)
 
-#ifndef BOOST_VARIANT_DO_NOT_USE_VARIADIC_TEMPLATES
 #   include <boost/mpl/limits/list.hpp>
 #   define BOOST_VARIANT_VISITATION_UNROLLING_LIMIT   \
         BOOST_MPL_LIMIT_LIST_SIZE
-#else
-#   define BOOST_VARIANT_VISITATION_UNROLLING_LIMIT   \
-        BOOST_VARIANT_LIMIT_TYPES
-#endif
 
 #endif
 
@@ -177,7 +172,7 @@ inline typename Visitor::result_type
 visitation_impl(
       int, int, Visitor&, VPCV
     , mpl::true_ // is_apply_visitor_unrolled
-    , NBF, W* = 0, S* = 0
+    , NBF, W* = nullptr, S* = nullptr
     )
 {
     // should never be here at runtime!
@@ -196,7 +191,7 @@ visitation_impl(
     , Visitor& visitor, VoidPtrCV storage
     , mpl::false_ // is_apply_visitor_unrolled
     , NoBackupFlag no_backup_flag
-    , Which* = 0, step0* = 0
+    , Which* = nullptr, step0* = nullptr
     )
 {
     // Typedef apply_visitor_unrolled steps and associated types...
@@ -263,8 +258,8 @@ visitation_impl(
 }} // namespace detail::variant
 } // namespace boost
 
-#if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)  
-# pragma warning(pop)  
-#endif 
+#if BOOST_WORKAROUND(BOOST_MSVC, >= 1400)
+# pragma warning(pop)
+#endif
 
 #endif // BOOST_VARIANT_DETAIL_VISITATION_IMPL_HPP

@@ -6,7 +6,7 @@
     Distributed under the Boost Software License, Version 1.0. (See accompanying 
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-#ifndef BOOST_FUSION_STD_ARRAY_IS_VIEW_IMPL_01062013_1700
+#if !defined(BOOST_FUSION_STD_ARRAY_IS_VIEW_IMPL_01062013_1700)
 #define BOOST_FUSION_STD_ARRAY_IS_VIEW_IMPL_01062013_1700
 
 #include <boost/mpl/bool.hpp>

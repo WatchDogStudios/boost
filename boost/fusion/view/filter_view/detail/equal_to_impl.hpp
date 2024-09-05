@@ -5,7 +5,7 @@
     Distributed under the Boost Software License, Version 1.0. (See accompanying 
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-#ifndef BOOST_FUSION_EQUAL_TO_IMPL_02012005_2133
+#if !defined(BOOST_FUSION_EQUAL_TO_IMPL_02012005_2133)
 #define BOOST_FUSION_EQUAL_TO_IMPL_02012005_2133
 
 namespace boost { namespace fusion 

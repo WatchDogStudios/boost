@@ -6,7 +6,7 @@
     http://www.boost.org/LICENSE_1_0.txt).
 ==============================================================================*/
 
-#ifndef BOOST_FUSION_SUPPORT_DEDUCE_SEQUENCE_HPP_INCLUDED
+#if !defined(BOOST_FUSION_SUPPORT_DEDUCE_SEQUENCE_HPP_INCLUDED)
 #define BOOST_FUSION_SUPPORT_DEDUCE_SEQUENCE_HPP_INCLUDED
 
 #include <boost/fusion/support/config.hpp>

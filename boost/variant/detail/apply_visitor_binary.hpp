@@ -4,7 +4,7 @@
 //-----------------------------------------------------------------------------
 //
 // Copyright (c) 2002-2003 Eric Friedman
-// Copyright (c) 2014-2019 Antony Polukhin
+// Copyright (c) 2014-2024 Antony Polukhin
 //
 // Distributed under the Boost Software License, Version 1.0. (See
 // accompanying file LICENSE_1_0.txt or copy at
@@ -21,13 +21,10 @@
 #   include <boost/variant/detail/has_result_type.hpp>
 #endif
 
-#ifndef BOOST_NO_CXX11_RVALUE_REFERENCES
-#   include <boost/core/enable_if.hpp>
-#   include <boost/type_traits/is_lvalue_reference.hpp>
-#   include <boost/type_traits/is_same.hpp>
-#   include <boost/move/move.hpp>
-#   include <boost/move/utility.hpp>
-#endif
+#include <boost/core/enable_if.hpp>
+#include <boost/type_traits/is_lvalue_reference.hpp>
+#include <boost/type_traits/is_same.hpp>
+#include <utility>
 
 namespace boost {
 
@@ -64,32 +61,19 @@ public: // structors
 
 public: // visitor interfaces
 
-#ifndef BOOST_NO_CXX11_RVALUE_REFERENCES
-
     template <typename Value2>
         typename enable_if_c<MoveSemantics && is_same<Value2, Value2>::value, result_type>::type
     operator()(Value2&& value2)
     {
-        return visitor_(::boost::move(value1_), ::boost::forward<Value2>(value2));
+        return visitor_(std::move(value1_), std::forward<Value2>(value2));
     }
 
     template <typename Value2>
         typename disable_if_c<MoveSemantics && is_same<Value2, Value2>::value, result_type>::type
     operator()(Value2&& value2)
     {
-        return visitor_(value1_, ::boost::forward<Value2>(value2));
+        return visitor_(value1_, std::forward<Value2>(value2));
     }
-
-#else
-
-    template <typename Value2>
-        result_type
-    operator()(Value2& value2)
-    {
-        return visitor_(value1_, value2);
-    }
-
-#endif
 
 private:
     apply_visitor_binary_invoke& operator=(const apply_visitor_binary_invoke&);
@@ -118,8 +102,6 @@ public: // structors
 
 public: // visitor interfaces
 
-#ifndef BOOST_NO_CXX11_RVALUE_REFERENCES
-
     template <typename Value1>
         typename enable_if_c<MoveSemantics && is_same<Value1, Value1>::value, result_type>::type
     operator()(Value1&& value1)
@@ -130,7 +112,7 @@ public: // visitor interfaces
             , ! ::boost::is_lvalue_reference<Value1>::value
             > invoker(visitor_, value1);
 
-        return boost::apply_visitor(invoker, ::boost::move(visitable2_));
+        return boost::apply_visitor(invoker, std::move(visitable2_));
     }
 
     template <typename Value1>
@@ -146,23 +128,6 @@ public: // visitor interfaces
         return boost::apply_visitor(invoker, visitable2_);
     }
 
-#else
-
-    template <typename Value1>
-        result_type
-    operator()(Value1& value1)
-    {
-        apply_visitor_binary_invoke<
-              Visitor
-            , Value1
-            , false
-            > invoker(visitor_, value1);
-
-        return boost::apply_visitor(invoker, visitable2_);
-    }
-
-#endif
-
 private:
     apply_visitor_binary_unwrap& operator=(const apply_visitor_binary_unwrap&);
 
@@ -174,8 +139,6 @@ private:
 // nonconst-visitor version:
 //
 
-#ifndef BOOST_NO_CXX11_RVALUE_REFERENCES
-
 template <typename Visitor, typename Visitable1, typename Visitable2>
 inline typename Visitor::result_type
 apply_visitor( Visitor& visitor, Visitable1&& visitable1, Visitable2&& visitable2)
@@ -184,29 +147,13 @@ apply_visitor( Visitor& visitor, Visitable1&& visitable1, Visitable2&& visitable
           Visitor, Visitable2, ! ::boost::is_lvalue_reference<Visitable2>::value
         > unwrapper(visitor, visitable2);
 
-    return boost::apply_visitor(unwrapper, ::boost::forward<Visitable1>(visitable1));
+    return boost::apply_visitor(unwrapper, std::forward<Visitable1>(visitable1));
 }
-
-#else
-
-template <typename Visitor, typename Visitable1, typename Visitable2>
-inline typename Visitor::result_type
-apply_visitor( Visitor& visitor, Visitable1& visitable1, Visitable2& visitable2)
-{
-    ::boost::detail::variant::apply_visitor_binary_unwrap<
-          Visitor, Visitable2, false
-        > unwrapper(visitor, visitable2);
-
-    return boost::apply_visitor(unwrapper, visitable1);
-}
-
-#endif
 
 //
 // const-visitor version:
 //
 
-#ifndef BOOST_NO_CXX11_RVALUE_REFERENCES
 
 template <typename Visitor, typename Visitable1, typename Visitable2>
 inline typename Visitor::result_type
@@ -216,23 +163,8 @@ apply_visitor( const Visitor& visitor , Visitable1&& visitable1 , Visitable2&& v
           const Visitor, Visitable2, ! ::boost::is_lvalue_reference<Visitable2>::value
         > unwrapper(visitor, visitable2);
 
-    return boost::apply_visitor(unwrapper, ::boost::forward<Visitable1>(visitable1));
+    return boost::apply_visitor(unwrapper, std::forward<Visitable1>(visitable1));
 }
-
-#else
-
-template <typename Visitor, typename Visitable1, typename Visitable2>
-inline typename Visitor::result_type
-apply_visitor( const Visitor& visitor , Visitable1& visitable1 , Visitable2& visitable2)
-{
-    ::boost::detail::variant::apply_visitor_binary_unwrap<
-          const Visitor, Visitable2, false
-        > unwrapper(visitor, visitable2);
-
-    return boost::apply_visitor(unwrapper, visitable1);
-}
-
-#endif
 
 
 #if !defined(BOOST_NO_CXX14_DECLTYPE_AUTO) && !defined(BOOST_NO_CXX11_DECLTYPE_N3276)
@@ -262,15 +194,15 @@ public: // structors
 public: // visitor interfaces
 
     template <typename Value2>
-    decltype(auto) operator()(Value2&& value2, typename enable_if_c<MoveSemantics && is_same<Value2, Value2>::value>::type* = 0)
+    decltype(auto) operator()(Value2&& value2, typename enable_if_c<MoveSemantics && is_same<Value2, Value2>::value, bool>::type = true)
     {
-        return visitor_(::boost::move(value1_), ::boost::forward<Value2>(value2));
+        return visitor_(std::move(value1_), std::forward<Value2>(value2));
     }
 
     template <typename Value2>
-    decltype(auto) operator()(Value2&& value2, typename disable_if_c<MoveSemantics && is_same<Value2, Value2>::value>::type* = 0)
+    decltype(auto) operator()(Value2&& value2, typename disable_if_c<MoveSemantics && is_same<Value2, Value2>::value, bool>::type = true)
     {
-        return visitor_(value1_, ::boost::forward<Value2>(value2));
+        return visitor_(value1_, std::forward<Value2>(value2));
     }
 
 private:
@@ -294,7 +226,7 @@ public: // structors
 public: // visitor interfaces
 
     template <typename Value1>
-    decltype(auto) operator()(Value1&& value1, typename enable_if_c<MoveSemantics && is_same<Value1, Value1>::value>::type* = 0)
+    decltype(auto) operator()(Value1&& value1, typename enable_if_c<MoveSemantics && is_same<Value1, Value1>::value, bool>::type = true)
     {
         apply_visitor_binary_invoke_cpp14<
               Visitor
@@ -302,11 +234,11 @@ public: // visitor interfaces
             , ! ::boost::is_lvalue_reference<Value1>::value
             > invoker(visitor_, value1);
 
-        return boost::apply_visitor(invoker, ::boost::move(visitable2_));
+        return boost::apply_visitor(invoker, std::move(visitable2_));
     }
 
     template <typename Value1>
-    decltype(auto) operator()(Value1&& value1, typename disable_if_c<MoveSemantics && is_same<Value1, Value1>::value>::type* = 0)
+    decltype(auto) operator()(Value1&& value1, typename disable_if_c<MoveSemantics && is_same<Value1, Value1>::value, bool>::type = true)
     {
         apply_visitor_binary_invoke_cpp14<
               Visitor
@@ -326,27 +258,29 @@ private:
 template <typename Visitor, typename Visitable1, typename Visitable2>
 inline decltype(auto) apply_visitor(Visitor& visitor, Visitable1&& visitable1, Visitable2&& visitable2,
     typename boost::disable_if<
-        boost::detail::variant::has_result_type<Visitor>
-    >::type* = 0)
+        boost::detail::variant::has_result_type<Visitor>,
+        bool
+    >::type = true)
 {
     ::boost::detail::variant::apply_visitor_binary_unwrap_cpp14<
           Visitor, Visitable2, ! ::boost::is_lvalue_reference<Visitable2>::value
         > unwrapper(visitor, visitable2);
 
-    return boost::apply_visitor(unwrapper, ::boost::forward<Visitable1>(visitable1));
+    return boost::apply_visitor(unwrapper, std::forward<Visitable1>(visitable1));
 }
 
 template <typename Visitor, typename Visitable1, typename Visitable2>
 inline decltype(auto) apply_visitor(const Visitor& visitor, Visitable1&& visitable1, Visitable2&& visitable2,
     typename boost::disable_if<
-        boost::detail::variant::has_result_type<Visitor>
-    >::type* = 0)
+        boost::detail::variant::has_result_type<Visitor>,
+        bool
+    >::type = true)
 {
     ::boost::detail::variant::apply_visitor_binary_unwrap_cpp14<
           const Visitor, Visitable2, ! ::boost::is_lvalue_reference<Visitable2>::value
         > unwrapper(visitor, visitable2);
 
-    return boost::apply_visitor(unwrapper, ::boost::forward<Visitable1>(visitable1));
+    return boost::apply_visitor(unwrapper, std::forward<Visitable1>(visitable1));
 }
 
 

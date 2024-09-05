@@ -7,7 +7,7 @@
     Distributed under the Boost Software License, Version 1.0. (See accompanying 
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-#ifndef FUSION_FIND_IF_05052005_1107
+#if !defined(FUSION_FIND_IF_05052005_1107)
 #define FUSION_FIND_IF_05052005_1107
 
 #include <boost/fusion/support/config.hpp>

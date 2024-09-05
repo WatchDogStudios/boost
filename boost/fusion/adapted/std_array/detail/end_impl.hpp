@@ -6,7 +6,7 @@
     Distributed under the Boost Software License, Version 1.0. (See accompanying 
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 ==============================================================================*/
-#ifndef BOOST_FUSION_STD_ARRAY_END_OF_IMPL_01062013_1700
+#if !defined(BOOST_FUSION_STD_ARRAY_END_OF_IMPL_01062013_1700)
 #define BOOST_FUSION_STD_ARRAY_END_OF_IMPL_01062013_1700
 
 #include <boost/fusion/adapted/std_array/std_array_iterator.hpp>
